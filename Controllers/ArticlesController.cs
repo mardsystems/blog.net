@@ -11,17 +11,17 @@ namespace Blog.Controllers
 {
     public class ArticlesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _db;
 
-        public ArticlesController(ApplicationDbContext context)
+        public ArticlesController(ApplicationDbContext db)
         {
-            _context = context;
+            _db = db;
         }
 
         // GET: Articles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Articles.ToListAsync());
+            return View(await _db.Articles.ToListAsync());
         }
 
         // GET: Articles/Details/5
@@ -32,7 +32,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            var article = await _context.Articles
+            var article = await _db.Articles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
@@ -57,8 +57,8 @@ namespace Blog.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(article);
-                await _context.SaveChangesAsync();
+                _db.Add(article);
+                await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(article);
@@ -72,7 +72,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            var article = await _context.Articles.FindAsync(id);
+            var article = await _db.Articles.FindAsync(id);
             if (article == null)
             {
                 return NotFound();
@@ -96,8 +96,8 @@ namespace Blog.Controllers
             {
                 try
                 {
-                    _context.Update(article);
-                    await _context.SaveChangesAsync();
+                    _db.Update(article);
+                    await _db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,7 +123,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            var article = await _context.Articles
+            var article = await _db.Articles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
@@ -138,15 +138,15 @@ namespace Blog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var article = await _context.Articles.FindAsync(id);
-            _context.Articles.Remove(article);
-            await _context.SaveChangesAsync();
+            var article = await _db.Articles.FindAsync(id);
+            _db.Articles.Remove(article);
+            await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ArticleExists(int id)
         {
-            return _context.Articles.Any(e => e.Id == id);
+            return _db.Articles.Any(e => e.Id == id);
         }
     }
 }
