@@ -10,6 +10,6 @@ namespace Blog.Data
             : base(options)
         {
         }
-        public DbSet<Blog.Data.Article> Article { get; set; }
+        public DbSet<Blog.Data.Article> Articles { get; set; }
     }
 }

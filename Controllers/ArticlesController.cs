@@ -21,7 +21,7 @@ namespace Blog.Controllers
         // GET: Articles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Article.ToListAsync());
+            return View(await _context.Articles.ToListAsync());
         }
 
         // GET: Articles/Details/5
@@ -32,7 +32,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            var article = await _context.Article
+            var article = await _context.Articles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
@@ -72,7 +72,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            var article = await _context.Article.FindAsync(id);
+            var article = await _context.Articles.FindAsync(id);
             if (article == null)
             {
                 return NotFound();
@@ -123,7 +123,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            var article = await _context.Article
+            var article = await _context.Articles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (article == null)
             {
@@ -138,15 +138,15 @@ namespace Blog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var article = await _context.Article.FindAsync(id);
-            _context.Article.Remove(article);
+            var article = await _context.Articles.FindAsync(id);
+            _context.Articles.Remove(article);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ArticleExists(int id)
         {
-            return _context.Article.Any(e => e.Id == id);
+            return _context.Articles.Any(e => e.Id == id);
         }
     }
 }
